@@ -27,7 +27,7 @@ register = template.Library()
 
 @register.simple_tag
 def avatar_url(profile, use_svg=True):
-    if isinstance(profile, Profile) and profile.avatar:
+    if isinstance(profile, Profile) and getattr(profile, 'avatar', None):
         return profile.avatar.get_avatar_url(use_svg)
     if isinstance(profile, str):
         return f'{settings.BASE_URL}dynamic/avatar/{profile}'

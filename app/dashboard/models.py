@@ -1225,11 +1225,10 @@ class Tip(SendCryptoAsset):
     def receive_url(self):
         if self.web3_type == 'yge':
             return self.url
-        elif self.web3_type == 'v3':
+        if self.web3_type == 'v3':
             return self.receive_url_for_recipient
-        elif self.web3_type != 'v2':
+        if self.web3_type != 'v2':
             raise Exception
-
         return self.receive_url_for_recipient
 
     @property

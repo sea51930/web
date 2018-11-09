@@ -15,12 +15,15 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 {% endcomment %}
-{% load humanize i18n static %}
+{% load humanize i18n static avatar_tags %}
 <div class="row box activity">
   <div class="col-12 col-md-1">
     <div class="activity-avatar">
-      <img class="avatar" src="/dynamic/avatar/{{ row.profile.handle }}"/>
-      {% if row.metadata.to_username %}
+      <img class="avatar" src="{% avatar_url row.profile %}"/>
+      {% if row.tip and row.tip.recipient_profile %}
+        <img class="avatar" src="{% avatar_url row.tip.recipient_profile %}" style="
+      width: 30px; height: 30px; bottom: 0; right: 0; position: absolute;"/>
+      {% elif row.metadata.to_username %}
         <img class="avatar" src="/dynamic/avatar/{{ row.metadata.to_username|cut:'@' }}" style="
       width: 30px; height: 30px; bottom: 0; right: 0; position: absolute;"/>
       {% endif %}
@@ -28,19 +31,19 @@
   </div>
   <div class="col-12 col-md-10 activity-info">
     <div class="activity-status mb-2">
-      <a href="https://gitcoin.co/profile/{{ row.profile.handle }}" target="_blank">
+      <a href="{% url 'profile' row.profile.handle %}" target="_blank">
         @{{ row.profile.handle }}
       </a>
       {% if row.activity_type == 'new_tip' %}
         {% trans "tipped" %}
-        <a href="https://gitcoin.co/profile/{{ row.metadata.to_username }}" target="_blank">
+        <a href="{% url 'profile' row.metadata.to_username|cut:'@' %}" target="_blank">
           @{{ row.metadata.to_username }}
         </a>
       {% elif row.activity_type == 'new_kudos' %}
         {% trans "send a" %}
         {{ row.i18n_name|lower }}
         {% trans "to" %}
-        <a href="/profile/{{ row.metadata.to_username|cut:'@' }}">
+        <a href="{% url 'profile' row.metadata.to_username|cut:'@' %}">
           {{ row.metadata.to_username }}
         </a>
       {% elif row.activity_type == 'new_bounty' %}

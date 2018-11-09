@@ -14,8 +14,7 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
-{% load i18n static %}
-{% load kudos_extras %}
+{% load i18n static kudos_extras avatar_tags %}
 <input id="is-authenticated" type="hidden" value={{ user.is_authenticated }}>
 {% if user.is_authenticated %}
   <div class="nav-item dropdown interior">
@@ -91,7 +90,7 @@
       </a>
     </div>
   </div>
-  <a href="/profile/" class="nav_avatar d-none d-md-block"
+  <a href="{% url 'profile' %}" class="nav_avatar d-none d-md-block"
     style="background-image:url({% if user.profile.avatar %}{{ user.profile.avatar.avatar_url }}{% else %}/dynamic/avatar/{% if user and user.username %}{{ user.username }}{% else %}Self{% endif %}{% endif %})"></a>
 {% else %}
   <a class="nav-link login interior" href="{% url 'social:begin' 'github' %}?next={{ request.get_full_path }}"
